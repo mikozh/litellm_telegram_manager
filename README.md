@@ -185,9 +185,9 @@ Start and enable the service
 
 ```commandline
 systemctl daemon-reload
-systemctl enable myapp.service
-systemctl start myapp.service
-systemctl status myapp.service
+systemctl enable telelite.service
+systemctl start telelite.service
+systemctl status telelite.service
 ```
 
 ### Adding New Features
