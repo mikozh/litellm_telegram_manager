@@ -173,6 +173,23 @@ pip install -r requirements.txt
 python bot.py
 ```
 
+### Running as a service
+
+Copy `telelite.service` to `/etc/systemd/system/`
+
+```commandline
+sudo cp telelite.service /etc/systemd/system/
+```
+
+Start and enable the service
+
+```commandline
+systemctl daemon-reload
+systemctl enable myapp.service
+systemctl start myapp.service
+systemctl status myapp.service
+```
+
 ### Adding New Features
 
 The bot is modular and easy to extend:

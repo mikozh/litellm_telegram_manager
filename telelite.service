@@ -1,0 +1,15 @@
+[Unit]
+Description=Telegram bot to manage LiteLLM
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root/litellm_telegram_manager
+ExecStart=/usr/bin/python3.13 /root/litellm_telegram_manager/bot.py
+Restart=always
+RestartSec=5
+User=root
+
+[Install]
+WantedBy=multi-user.target
