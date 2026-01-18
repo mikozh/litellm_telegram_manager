@@ -190,6 +190,12 @@ systemctl start telelite.service
 systemctl status telelite.service
 ```
 
+Check service logs
+```commandline
+journalctl -u telelite.service -f
+```
+
+
 ### Adding New Features
 
 The bot is modular and easy to extend:

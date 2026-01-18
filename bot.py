@@ -133,7 +133,8 @@ async def create_token_command(update: Update, context: ContextTypes.DEFAULT_TYP
             elif 'token' in data:
                 response += f"Token: `{data['token']}`\n"
 
-            response += f"\nEmail: {email}\n"
+            response += f"\nUser: `{username}`\n"
+            response += f"\nEmail: `{email}`\n"
 
             if models:
                 response += f"Models: {', '.join(models)}\n"
