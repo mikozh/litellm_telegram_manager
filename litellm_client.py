@@ -12,34 +12,41 @@ class LiteLLMClient:
             'Content-Type': 'application/json'
         }
 
-    def list_users(self) -> Dict[str, Any]:
-        url = f'{self.api_url}/user/list'
+    def list_users(self, page_size: int = 25) -> Dict[str, Any]:
 
-        try:
-            response = requests.get(url, headers=self.headers, timeout=30)
-            response.raise_for_status()
+        all_users = []
+        for page in range(1, 1000, 1):
+            url = f'{self.api_url}/user/list'
+            print(page)
+            try:
+                response = requests.get(url, headers=self.headers, timeout=30,
+                                        params={"page": page, "page_size": page_size})
+                response.raise_for_status()
 
-            # /user/list typically returns a list of user objects directly
-            # or wrapped in a "users" key depending on version/config.
-            resp_data = response.json()
+                # /user/list typically returns a list of user objects directly
+                # or wrapped in a "users" key depending on version/config.
+                resp_data = response.json()
 
-            # Handle potential response formats (list vs dict wrapper)
-            if isinstance(resp_data, list):
-                users = resp_data
-            elif isinstance(resp_data, dict):
-                # Common keys for list wrappers: 'users', 'data', 'info'
-                users = resp_data.get('users') or resp_data.get('data') or []
-            else:
-                users = []
+                # Handle potential response formats (list vs dict wrapper)
+                if isinstance(resp_data, list):
+                    users = resp_data
+                elif isinstance(resp_data, dict):
+                    # Common keys for list wrappers: 'users', 'data', 'info'
+                    users = resp_data.get('users') or resp_data.get('data') or []
+                else:
+                    users = []
 
-        except requests.exceptions.RequestException as e:
-            return {
-                'success': False,
-                'error': str(e),
-                'status_code': getattr(e.response, 'status_code', None) if hasattr(e, 'response') else None
-            }
+            except requests.exceptions.RequestException as e:
+                return {
+                    'success': False,
+                    'error': str(e),
+                    'status_code': getattr(e.response, 'status_code', None) if hasattr(e, 'response') else None
+                }
+            all_users.extend(users)
+            if len(users) < page_size or not users:
+                break
 
-        return users
+        return all_users
 
     def list_teams(self) -> Dict[str, Any]:
         """
